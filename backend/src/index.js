@@ -2,7 +2,7 @@ import express from 'express'
 import { WebSocketServer } from 'ws';
 import { Chess } from 'chess.js'
 import http from 'http'
-import { GameManager } from './src/GameManager';
+import { GameManager } from './GameManager.js';
 
 // const app = express();
 // const server = http.createServer(app);
