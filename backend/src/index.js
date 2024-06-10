@@ -14,8 +14,8 @@ const wss = new WebSocketServer({port: 3000})
 const gameManager = new GameManager();
 
 const chess = new Chess();
-let players = {};
-let currentPlayer = "w";
+// let players = {};
+// let currentPlayer = "w";
 
 // app.get("/", (req, res) => {
 //     res.send("hello");
