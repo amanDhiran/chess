@@ -22,6 +22,7 @@ function Game() {
   const [chess, setChess] = useState(new Chess)
   const [board, setBoard] = useState(chess.board())
   const [started, setStarted] = useState(false)
+  const [playerColor, setPlayerColor] = useState('w'); // Default to white
 
   useEffect(() => {
     if(!socket) return
@@ -32,8 +33,9 @@ function Game() {
       switch (message.type) {
         case INIT_GAME:
           console.log("game initialized");
-          setBoard(chess.board())
-          setStarted(true)
+          setBoard(chess.board());
+          setStarted(true);
+          setPlayerColor(message.payload.color);
           break;
         case MOVE:
           const move = message.payload;
@@ -53,7 +55,7 @@ function Game() {
   return (
     <div className='pt-10 px-5 lg:grid lg:grid-cols-3'>
       <div className='col-span-2'>
-        <Chessboard setBoard= {setBoard} chess = {chess} board ={board} socket = {socket}/>
+        <Chessboard setBoard= {setBoard} chess = {chess} board ={board} socket = {socket} playerColor={playerColor}/>
       </div>
       <div className=' px-10 lg:px-5 py-5 lg:mt-0 mt-8 bg-[#262522] rounded-lg '>
         {!started && <button className='bg-[#81b64c] w-full hover:bg-[#a4e069]  px-10 py-3 md:py-4 rounded-xl text-2xl lg:text-3xl text-white font-semibold' onClick={() => {
