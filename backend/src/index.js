@@ -1,10 +1,11 @@
 import express from "express";
 import { WebSocketServer } from "ws";
-// import { Chess } from 'chess.js'
 import http from "http";
 import { GameManager } from "./GameManager.js";
 import session from 'express-session';
 import { initPassport } from "./passport.js";
+import userRouter from "./routes/auth.js";
+import passport from "passport";
 
 const app = express();
 const server = http.createServer(app);
@@ -36,7 +37,7 @@ wss.on("connection", (socket) => {
   });
 });
 
-app.use('/api/v1/user', userRouter)
+app.use('/auth', userRouter)
 
 server.listen(3000, () => {
   console.log("Server is listening on port 3000");

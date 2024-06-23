@@ -1,7 +1,6 @@
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const GithubStrategy = require('passport-github2').Strategy;
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as GithubStrategy } from 'passport-github2';
 import passport from 'passport';
-import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client'
 
 // interface GithubEmailRes {
@@ -56,7 +55,7 @@ export function initPassport() {
           },
         });
 
-        done(null, user);
+      return done(null, user);
       },
     ),
   );

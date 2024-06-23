@@ -50,7 +50,7 @@ function Game() {
     }
   }, [socket])
 
-  if(!socket) return <div>Connecting...</div>
+  // if(!socket) return <div>Connecting...</div>
 
   return (
     <div className='pt-10 px-5 lg:grid lg:grid-cols-3'>
