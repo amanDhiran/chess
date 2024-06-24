@@ -6,6 +6,7 @@ import session from 'express-session';
 import { initPassport } from "./passport.js";
 import userRouter from "./routes/auth.js";
 import passport from "passport";
+import cors from "cors"
 
 const app = express();
 const server = http.createServer(app);
@@ -37,6 +38,9 @@ wss.on("connection", (socket) => {
   });
 });
 
+app.use(
+  cors()
+)
 app.use('/auth', userRouter)
 
 server.listen(3000, () => {
