@@ -1,5 +1,6 @@
 import {Chess} from 'chess.js'
 import { GAME_OVER, INIT_GAME, MOVE } from './messages.js';
+import prisma from './db/index.js';
 
 export class Game {
     player1;
@@ -13,20 +14,44 @@ export class Game {
         this.player2 = player2
         this.board = new Chess()
         this.moves = []
-        this.player1.socket.send(JSON.stringify({
+        
+    }
+
+    async getPlayersInfo(){
+        const users = await prisma.user.findMany({
+            where: {
+              id: {
+                in: [this.player1.userId, this.player2.userId ?? ''],
+              },
+            },
+          });
+
+          this.player1.socket.send(JSON.stringify({
             type: INIT_GAME,
             payload: {
                 color: "w",
-                whitePlayer: player1,
-                blackPlayer: player2
+                whitePlayer: {
+                    name: users.find((user) => user.id === this.player1.userId)?.name,
+                    id: this.player1.userId,
+                  },
+                blackPlayer: {
+                    name: users.find((user) => user.id === this.player2.userId)?.name,
+                    id: this.player2.userId,
+                  }
             }
         }))
         this.player2.socket.send(JSON.stringify({
             type: INIT_GAME,
             payload: {
                 color: "b",
-                whitePlayer: player1,
-                blackPlayer: player2
+                whitePlayer: {
+                    name: users.find((user) => user.id === this.player1.userId)?.name,
+                    id: this.player1.userId,
+                  },
+                blackPlayer: {
+                    name: users.find((user) => user.id === this.player2.userId)?.name,
+                    id: this.player2.userId,
+                  }
             }
         }))
     }

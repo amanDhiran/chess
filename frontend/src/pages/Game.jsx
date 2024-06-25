@@ -25,23 +25,24 @@ function Game() {
   const [chess, setChess] = useState(new Chess)
   const [board, setBoard] = useState(chess.board())
   const [started, setStarted] = useState(false)
+  const [playersData, setPlayersData] = useState(null)
   const [playerColor, setPlayerColor] = useState('w'); // Default to white
   const navigate = useNavigate()
-  const data = useUser()
+  const user = useUser()
 
 
   useEffect(() => {
-    if (data === null) {
+    if (user === null) {
       // Still loading
       return;
     }
 
-    if (!data) {
+    if (!user) {
       navigate('/login');
     } else {
-      console.log("user from games:", data);
+      console.log("user from games:", user);
     }
-  }, [data, navigate]);
+  }, [user, navigate]);
   
   useEffect(() => {
     if(!socket) return
@@ -55,6 +56,10 @@ function Game() {
           setBoard(chess.board());
           setStarted(true);
           setPlayerColor(message.payload.color);
+          setPlayersData({
+            blackPlayer: message.payload.blackPlayer,
+            whitePlayer: message.payload.whitePlayer,
+          });
           break;
         case MOVE:
           const move = message.payload;
@@ -74,7 +79,13 @@ function Game() {
   return (
     <div className='pt-10 px-5 lg:grid lg:grid-cols-3'>
       <div className='col-span-2'>
+        {started && <p>{user.id === playersData?.whitePlayer?.id
+                              ? playersData?.blackPlayer?.name
+                              : playersData?.whitePlayer?.name ?? ''}</p>}
         <Chessboard setBoard= {setBoard} chess = {chess} board ={board} socket = {socket} playerColor={playerColor}/>
+        {started && <p>{user.id === playersData?.blackPlayer?.id
+                              ? playersData?.blackPlayer?.name
+                              : playersData?.whitePlayer?.name ?? ''}</p>}
       </div>
       <div className=' px-10 lg:px-5 py-5 lg:mt-0 mt-8 bg-[#262522] rounded-lg '>
         {!started && <button className='bg-[#81b64c] w-full hover:bg-[#a4e069]  px-10 py-3 md:py-4 rounded-xl text-2xl lg:text-3xl text-white font-semibold' onClick={() => {

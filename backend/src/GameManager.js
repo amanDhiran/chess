@@ -30,6 +30,7 @@ export class GameManager{
                     //start game
                     const game = new Game(this.pendingUser, user);
                     this.games.push(game)
+                    game.getPlayersInfo()
                     this.pendingUser = null
                 }else {
                     this.pendingUser = user

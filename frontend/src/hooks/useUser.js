@@ -15,6 +15,7 @@ export const useUser = () => {
           console.log(response.data); 
         } catch (error) {
             console.error('There was an error while fetching user:', error);
+            setData(undefined)
         }
     };
     
