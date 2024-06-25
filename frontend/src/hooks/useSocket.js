@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react"
+import { useUser } from "./useUser"
 
 export const useSocket = () => {
     const [socket, setSocket] = useState(null)
 
     const WS_URL = "ws://localhost:3000"
+    const data = useUser()
 
     useEffect(() => {
-        const ws = new WebSocket(WS_URL);
+        if(!data) {
+            console.log(data)
+            return
+        };
+
+        const ws = new WebSocket(`${WS_URL}?token=${data.token}`);
 
         ws.onopen = () => {
             console.log("connected");
@@ -20,7 +27,7 @@ export const useSocket = () => {
         return () => {
             ws.close();
         }
-    }, []);
+    }, [data]);
 
     return socket;
 }

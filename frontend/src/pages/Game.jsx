@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Chessboard from '../components/Chessboard'
 import { useSocket } from '../hooks/useSocket'
 import {Chess} from 'chess.js'
+import { useUser } from '../hooks/useUser';
+import { useNavigate } from 'react-router-dom'
+
 
 export const INIT_GAME = 'init_game';
 export const MOVE = 'move';
@@ -23,7 +26,23 @@ function Game() {
   const [board, setBoard] = useState(chess.board())
   const [started, setStarted] = useState(false)
   const [playerColor, setPlayerColor] = useState('w'); // Default to white
+  const navigate = useNavigate()
+  const data = useUser()
 
+
+  useEffect(() => {
+    if (data === null) {
+      // Still loading
+      return;
+    }
+
+    if (!data) {
+      navigate('/login');
+    } else {
+      console.log("user from games:", data);
+    }
+  }, [data, navigate]);
+  
   useEffect(() => {
     if(!socket) return
 
@@ -50,7 +69,7 @@ function Game() {
     }
   }, [socket])
 
-  // if(!socket) return <div>Connecting...</div>
+  if(!socket) return <div>Connecting...</div>
 
   return (
     <div className='pt-10 px-5 lg:grid lg:grid-cols-3'>

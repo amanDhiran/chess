@@ -13,17 +13,20 @@ export class Game {
         this.player2 = player2
         this.board = new Chess()
         this.moves = []
-        // this.startTime = new Date();
-        this.player1.send(JSON.stringify({
+        this.player1.socket.send(JSON.stringify({
             type: INIT_GAME,
             payload: {
-                color: "w"
+                color: "w",
+                whitePlayer: player1,
+                blackPlayer: player2
             }
         }))
-        this.player2.send(JSON.stringify({
+        this.player2.socket.send(JSON.stringify({
             type: INIT_GAME,
             payload: {
-                color: "b"
+                color: "b",
+                whitePlayer: player1,
+                blackPlayer: player2
             }
         }))
     }
@@ -46,11 +49,11 @@ export class Game {
 
 
         if(this.board.isGameOver()){
-            this.player1.send(JSON.stringify({
+            this.player1.socket.send(JSON.stringify({
                 type: GAME_OVER,
                 payload: this.board.turn() === "w" ? "black" : "white" 
             }))
-            this.player2.send(JSON.stringify({
+            this.player2.socket.send(JSON.stringify({
                 type: GAME_OVER,
                 payload: this.board.turn() === "w" ? "black" : "white" 
             }))
@@ -58,12 +61,12 @@ export class Game {
         }
 
         if(this.moves.length % 2 === 0){
-            this.player2.send(JSON.stringify({
+            this.player2.socket.send(JSON.stringify({
                 type: MOVE,
                 payload: move
             }))
         } else {
-            this.player1.send(JSON.stringify({
+            this.player1.socket.send(JSON.stringify({
                 type: MOVE,
                 payload: move
             }))

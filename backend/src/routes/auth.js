@@ -1,8 +1,10 @@
 import { Router } from "express";
 import passport from "passport";
+import prisma from "../db/index.js";
+import jwt from 'jsonwebtoken';
 
 const userRouter = Router();
-
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'
 userRouter.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -27,9 +29,21 @@ userRouter.get("/logout", (req, res) => {
   });
 });
 
-userRouter.get('/user', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json(req.user);
+userRouter.get('/user', async (req, res) => {
+  if (req.user) {
+    const user = req.user;
+
+    const dbUser = await prisma.user.findFirst({
+      where: {
+        id: user.id,
+      },
+    })
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+    res.json({
+      token,
+      id: user.id,
+      name: dbUser?.name
+    })
   } else {
     res.status(401).json({ error: 'User not authenticated' });
   }

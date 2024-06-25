@@ -1,7 +1,7 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import passport from 'passport';
-import { PrismaClient } from '@prisma/client'
+import prisma from './db/index.js';
 
 // interface GithubEmailRes {
 //   email: string;
@@ -9,8 +9,6 @@ import { PrismaClient } from '@prisma/client'
 //   verified: boolean;
 //   visibility: 'private' | 'public';
 // }
-
-const prisma = new PrismaClient()
 
 const GOOGLE_CLIENT_ID =
   process.env.GOOGLE_CLIENT_ID || 'your_google_client_id';

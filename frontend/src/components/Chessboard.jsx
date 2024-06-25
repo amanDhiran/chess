@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MOVE } from "../pages/Game";
 
 // square: Square;
-// type: PieceSymbol;
+// type: PieceSymbol; 
 // color: Color;
 
 function Chessboard({ board, socket, setBoard, chess, playerColor }) {

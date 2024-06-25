@@ -12,34 +12,34 @@ export class GameManager{
         this.users = []
     }
 
-    addUser(socket){
-        this.users.push(socket)
-        this.handleMessage(socket)
+    addUser(user){
+        this.users.push(user)
+        this.handleMessage(user)
     }
 
     removeUser(socket){
         this.users = this.users.filter(user => user != socket)
     }
 
-    handleMessage(socket){
-        socket.on("message", (data) => {
+    handleMessage(user){
+        user.socket.on("message", (data) => {
             const message = JSON.parse(data.toString())
 
             if(message.type === INIT_GAME){
                 if (this.pendingUser){
                     //start game
-                    const game = new Game(this.pendingUser, socket);
+                    const game = new Game(this.pendingUser, user);
                     this.games.push(game)
                     this.pendingUser = null
                 }else {
-                    this.pendingUser = socket
+                    this.pendingUser = user
                 }
             }
 
             if(message.type === MOVE){
-                const game = this.games.find(game => game.player1 === socket || game.player2 === socket)
+                const game = this.games.find(game => game.player1.socket === user.socket || game.player2.socket === user.socket)
                 if(game){
-                    game.makeMove(socket, message.payload)
+                    game.makeMove(user.socket, message.payload)
                 }
             }
         })
