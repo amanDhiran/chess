@@ -4,6 +4,7 @@ import { useSocket } from '../hooks/useSocket'
 import {Chess} from 'chess.js'
 import { useUser } from '../hooks/useUser';
 import { useNavigate } from 'react-router-dom'
+import Navbar from '../components/Navbar';
 
 
 export const INIT_GAME = 'init_game';
@@ -28,21 +29,19 @@ function Game() {
   const [playersData, setPlayersData] = useState(null)
   const [playerColor, setPlayerColor] = useState('w'); // Default to white
   const navigate = useNavigate()
-  const user = useUser()
+  const {user, loading, error} = useUser()
 
 
   useEffect(() => {
-    if (user === null) {
+    if (loading) {
       // Still loading
       return;
     }
 
-    if (!user) {
+    if (!user || error) {
       navigate('/login');
-    } else {
-      console.log("user from games:", user);
     }
-  }, [user, navigate]);
+  }, [loading]);
   
   useEffect(() => {
     if(!socket) return
@@ -77,24 +76,27 @@ function Game() {
   if(!socket) return <div>Connecting...</div>
 
   return (
-    <div className='pt-10 px-5 lg:grid lg:grid-cols-3'>
-      <div className='col-span-2'>
-        {started && <p>{user.id === playersData?.whitePlayer?.id
-                              ? playersData?.blackPlayer?.name
-                              : playersData?.whitePlayer?.name ?? ''}</p>}
-        <Chessboard setBoard= {setBoard} chess = {chess} board ={board} socket = {socket} playerColor={playerColor}/>
-        {started && <p>{user.id === playersData?.blackPlayer?.id
-                              ? playersData?.blackPlayer?.name
-                              : playersData?.whitePlayer?.name ?? ''}</p>}
+    <>
+      <Navbar />
+      <div className='pt-10 px-5 lg:grid lg:grid-cols-3'>
+        <div className='col-span-2'>
+          {started && <p className={`max-w-[500px] text-white md:max-w-[500px] lg:max-w-[600px] m-auto grid`}>{user.id === playersData?.whitePlayer?.id
+                                ? playersData?.blackPlayer?.name
+                                : playersData?.whitePlayer?.name ?? ''}</p>}
+          <Chessboard setBoard= {setBoard} chess = {chess} board ={board} socket = {socket} playerColor={playerColor}/>
+          {started && <p className={`max-w-[500px] text-white md:max-w-[500px] lg:max-w-[600px] m-auto grid`}>{user.id === playersData?.blackPlayer?.id
+                                ? playersData?.blackPlayer?.name
+                                : playersData?.whitePlayer?.name ?? ''}</p>}
+        </div>
+        <div className=' px-10 lg:px-5 py-5 lg:mt-0 mt-8 bg-[#262522] rounded-lg '>
+          {!started && <button className='bg-[#81b64c] w-full hover:bg-[#a4e069]  px-10 py-3 md:py-4 rounded-xl text-2xl lg:text-3xl text-white font-semibold' onClick={() => {
+            socket.send(JSON.stringify({
+              type: INIT_GAME
+            }))
+          }}>Play</button>}
+        </div>
       </div>
-      <div className=' px-10 lg:px-5 py-5 lg:mt-0 mt-8 bg-[#262522] rounded-lg '>
-        {!started && <button className='bg-[#81b64c] w-full hover:bg-[#a4e069]  px-10 py-3 md:py-4 rounded-xl text-2xl lg:text-3xl text-white font-semibold' onClick={() => {
-          socket.send(JSON.stringify({
-            type: INIT_GAME
-          }))
-        }}>Play</button>}
-      </div>
-    </div>
+    </>
   )
 }
 

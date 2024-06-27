@@ -5,15 +5,14 @@ export const useSocket = () => {
     const [socket, setSocket] = useState(null)
 
     const WS_URL = "ws://localhost:3000"
-    const data = useUser()
+    const {user, loading, error} = useUser()
 
     useEffect(() => {
-        if(!data) {
-            console.log(data)
+        if(loading || error || !user) {
             return
         };
 
-        const ws = new WebSocket(`${WS_URL}?token=${data.token}`);
+        const ws = new WebSocket(`${WS_URL}?token=${user.token}`);
 
         ws.onopen = () => {
             console.log("connected");
@@ -27,7 +26,7 @@ export const useSocket = () => {
         return () => {
             ws.close();
         }
-    }, [data]);
+    }, [user, loading, error]);
 
     return socket;
 }

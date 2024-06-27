@@ -58,10 +58,10 @@ export class Game {
     
     makeMove(socket, move){
         //right user is making a move
-        if(this.moves.length % 2 === 0 && socket !== this.player1){
+        if(this.moves.length % 2 === 0 && socket !== this.player1.socket){
             return
         }
-        if(this.moves.length % 2 === 1 && socket !== this.player2){
+        if(this.moves.length % 2 === 1 && socket !== this.player2.socket){
             return
         }
         

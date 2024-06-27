@@ -24,7 +24,8 @@ userRouter.get("/logout", (req, res) => {
       console.error("Error logging out:", err);
       res.status(500).json({ error: "Failed to log out" });
     } else {
-      res.redirect("http://localhost:5173/");
+      // res.redirect("http://localhost:5173");
+      res.status(200).json({ message: "Successfully logged out" });
     }
   });
 });
