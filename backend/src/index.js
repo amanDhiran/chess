@@ -46,8 +46,6 @@ wss.on("connection", (socket, req) => {
     }
 
     const userId = decoded.userId;
-    console.log('Authenticated user:', userId);
-
     gameManager.addUser(new User(socket, userId));
 
     socket.on('disconnect', () => {

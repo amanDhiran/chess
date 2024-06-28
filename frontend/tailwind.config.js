@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'chessboard-bg': 'url("/chessboard-background.png")'
+      }
+    },
   },
   plugins: [],
 }
