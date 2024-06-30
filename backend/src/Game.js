@@ -1,5 +1,5 @@
 import {Chess} from 'chess.js'
-import { GAME_OVER, INIT_GAME, MOVE } from './messages.js';
+import { GAME_ENDED, GAME_OVER, INIT_GAME, MOVE } from './messages.js';
 import prisma from './db/index.js';
 
 export class Game {
@@ -26,7 +26,7 @@ export class Game {
             },
           });
 
-          this.player1.socket.send(JSON.stringify({
+        this.player1.socket.send(JSON.stringify({
             type: INIT_GAME,
             payload: {
                 color: "w",
@@ -74,14 +74,17 @@ export class Game {
 
 
         if(this.board.isGameOver()){
-            this.player1.socket.send(JSON.stringify({
-                type: GAME_OVER,
-                payload: this.board.turn() === "w" ? "black" : "white" 
-            }))
-            this.player2.socket.send(JSON.stringify({
-                type: GAME_OVER,
-                payload: this.board.turn() === "w" ? "black" : "white" 
-            }))
+            const result = this.board.isDraw() ? "DRAW" : this.board.turn() === "w" ? "Black Wins" : "White Wins" 
+            
+            // this.player1.socket.send(JSON.stringify({
+            //     type: GAME_OVER,
+            //     payload:  result
+            // }))
+            // this.player2.socket.send(JSON.stringify({
+            //     type: GAME_OVER,
+            //     payload: result 
+            // }))
+            this.endGame("COMPLETED", result)
             return
         }
 
@@ -96,7 +99,23 @@ export class Game {
                 payload: move
             }))
         }
-
         this.moves.push(move)
+    }
+
+    endGame(status, result){
+        this.player1.socket.send(JSON.stringify({
+            type: GAME_ENDED,
+            payload: {
+                result,
+                status,
+              },
+        }))
+        this.player2.socket.send(JSON.stringify({
+            type: GAME_ENDED,
+            payload: {
+                result,
+                status,
+              },
+        }))
     }
 }

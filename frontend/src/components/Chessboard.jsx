@@ -5,7 +5,7 @@ import { MOVE } from "../pages/Game";
 // type: PieceSymbol; 
 // color: Color;
 
-function Chessboard({ board, socket, setBoard, chess, playerColor }) {
+function Chessboard({ board, socket, setBoard, chess, playerColor, started }) {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState();
 
@@ -55,6 +55,9 @@ function Chessboard({ board, socket, setBoard, chess, playerColor }) {
   // );
 
   const handleSquareClick = (squarePosition) => {
+    if (!started) {
+      return
+    }
     if(chess.turn() !== playerColor){
       return
   }

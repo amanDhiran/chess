@@ -48,11 +48,11 @@ wss.on("connection", (socket, req) => {
     const userId = decoded.userId;
     gameManager.addUser(new User(socket, userId));
 
-    socket.on('disconnect', () => {
+    socket.on('close', () => {
       gameManager.removeUser(socket);
     });
   });
-  socket.on("disconnect", () => {
+  socket.on("close", () => {
     // console.log("user disconnected");
     gameManager.removeUser(socket);
   });
