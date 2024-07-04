@@ -4,7 +4,9 @@ import prisma from "../db/index.js";
 import jwt from 'jsonwebtoken';
 
 const userRouter = Router();
+
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'
+
 userRouter.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -16,6 +18,18 @@ userRouter.get(
 userRouter.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
+);
+userRouter.get(
+  '/github',
+  passport.authenticate('github', { scope: ['read:user', 'user:email'] }),
+);
+
+userRouter.get(
+  '/github/callback',
+  passport.authenticate('github', {
+    successRedirect: "http://localhost:5173/game",
+    failureRedirect: '/login',
+  }),
 );
 
 userRouter.get("/logout", (req, res) => {

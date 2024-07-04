@@ -22,10 +22,6 @@ export class GameManager {
         // const remainingPlayer = game.player1.socket === socket ? game.player2 : game.player1;
         const result = game.player1.socket === socket ? "Black Wins" : "White Wins";
 
-        // remainingPlayer.socket.send(JSON.stringify({
-        //     type: OPPONENT_DISCONNECTED,
-        //     payload: "Your opponent has disconnected. You win by default."
-        // }));
         game.endGame("OPPONENT_DISCONNECTED", result)
 
         this.games = this.games.filter(g => g !== game);
@@ -56,7 +52,6 @@ export class GameManager {
           }
         } else {
           this.pendingUser = user;
-          //send GAME_ADDED message such that it can be used to wait for opponent 
         }
       }
 

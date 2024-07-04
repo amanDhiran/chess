@@ -33,6 +33,7 @@ function Game() {
   const [showResult, setShowResult] = useState(false);
   const [waitingForOpponent, setWaitingForOpponent] = useState(false)
   const [opponentDisconnected, setOpponentDisconnected] = useState(false);
+  const [showNewGame, setShowNewGame] = useState(false);
   const navigate = useNavigate();
   const { user, loading, error } = useUser();
 
@@ -47,6 +48,7 @@ function Game() {
 
   const handleNewGame = () => {
     setShowResult(false)
+    setShowNewGame(false)
     setBoard(chess.board())
     setStarted(false)
     setWaitingForOpponent(true)
@@ -56,6 +58,10 @@ function Game() {
       })
     );
   };
+
+  const closeResult = () => {
+    setShowResult(false)
+  }
 
   useEffect(() => {
     if (loading) {
@@ -113,7 +119,7 @@ function Game() {
           });
           chess.reset();
           setShowResult(true)
-
+          setShowNewGame(true)
           break;
       }
     };
@@ -170,16 +176,16 @@ function Game() {
               {waitingForOpponent? "Waiting..." : "Play"}
             </button>
           )}
-          {/* {result && (<button
+          {showNewGame && (<button
               onClick={handleNewGame}
-              className="bg-[#373735] hover:bg-[#4C4B48] text-white/70 hover:text-white  px-10 py-3 md:py-4 rounded-xl text-2xl lg:text-3xl font-semibold"
+              className="bg-[#373735] hover:bg-[#4C4B48] text-white/70 hover:text-white  w-full px-10 py-3 md:py-4 rounded-xl text-2xl lg:text-3xl font-semibold"
             >
               New Game
-            </button>)} */}
+            </button>)}
         </div>
       </div>
       {alertMessage && <Modal message={alertMessage} onClose={handleClose} />}
-      {showResult && <ResultModal result={result} onNewGame={handleNewGame} />}
+      {showResult && <ResultModal result={result} onNewGame={handleNewGame} onClose={closeResult}/>}
     </>
   );
 }
