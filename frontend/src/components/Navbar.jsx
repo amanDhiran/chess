@@ -23,7 +23,7 @@ function Navbar() {
 
   return (
     <div className='flex justify-between px-5 lg:px-16 py-5 items-center'>
-      <div className='text-white font-semibold text-2xl'>
+      <div onClick={() => navigate('/')} className='text-white cursor-pointer font-semibold text-2xl'>
         Play Chess
       </div>
       {loading? null : <div>

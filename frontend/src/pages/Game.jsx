@@ -130,7 +130,7 @@ function Game() {
   return (
     <>
       <Navbar />
-      <div className="pt-10 px-5 lg:grid lg:grid-cols-3">
+      <div className="pt-5 px-5 lg:grid lg:grid-cols-3">
         <div className="col-span-2">
           {started && (
             <p
