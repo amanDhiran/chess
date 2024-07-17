@@ -4,7 +4,7 @@ import { useUser } from "./useUser"
 export const useSocket = () => {
     const [socket, setSocket] = useState(null)
 
-    const WS_URL = "ws://localhost:3000"
+    const WS_URL = import.meta.env.WS_URL ?? "ws://localhost:3000"
     const {user, loading, error} = useUser()
 
     useEffect(() => {
