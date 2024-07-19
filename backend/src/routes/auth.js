@@ -5,12 +5,12 @@ import jwt from 'jsonwebtoken';
 
 const userRouter = Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'
-
+const JWT_SECRET = process.env.JWT_SECRET 
+const CLIENT_URL = process.env.CLIENT_URL
 userRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:5173/game",
+    successRedirect: CLIENT_URL || "http://localhost:5173/game",
     failureRedirect: "/login",
   })
 );
@@ -27,7 +27,7 @@ userRouter.get(
 userRouter.get(
   '/github/callback',
   passport.authenticate('github', {
-    successRedirect: "http://localhost:5173/game",
+    successRedirect: CLIENT_URL || "http://localhost:5173/game",
     failureRedirect: '/login',
   }),
 );

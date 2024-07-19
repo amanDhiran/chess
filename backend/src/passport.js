@@ -3,21 +3,17 @@ import { Strategy as GithubStrategy } from 'passport-github2';
 import passport from 'passport';
 import prisma from './db/index.js';
 
-// interface GithubEmailRes {
-//   email: string;
-//   primary: boolean;
-//   verified: boolean;
-//   visibility: 'private' | 'public';
-// }
 
 const GOOGLE_CLIENT_ID =
-  process.env.GOOGLE_CLIENT_ID || 'your_google_client_id';
+  process.env.GOOGLE_CLIENT_ID ;
 const GOOGLE_CLIENT_SECRET =
-  process.env.GOOGLE_CLIENT_SECRET || 'your_google_client_secret';
+  process.env.GOOGLE_CLIENT_SECRET;
 const GITHUB_CLIENT_ID =
-  process.env.GITHUB_CLIENT_ID || 'your_github_client_id';
+  process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET =
-  process.env.GITHUB_CLIENT_SECRET || 'your_github_client_secret';
+  process.env.GITHUB_CLIENT_SECRET ;
+
+const BACKEND_URL = process.env.BACKEND_URL || "";
 
 export function initPassport() {
   if (
@@ -36,7 +32,7 @@ export function initPassport() {
       {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: '/auth/google/callback',
+        callbackURL: `${BACKEND_URL}/auth/google/callback`,
       },
       async function (accessToken, refreshToken, profile, done) {
         const user = await prisma.user.upsert({
@@ -63,7 +59,7 @@ export function initPassport() {
       {
         clientID: GITHUB_CLIENT_ID,
         clientSecret: GITHUB_CLIENT_SECRET,
-        callbackURL: '/auth/github/callback',
+        callbackURL: `${BACKEND_URL}/auth/google/callback`,
       },
       async function (accessToken, refreshToken, profile, done) {
         const res = await fetch('https://api.github.com/user/emails', {

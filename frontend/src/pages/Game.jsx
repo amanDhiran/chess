@@ -125,8 +125,8 @@ function Game() {
     };
   }, [socket]);
 
-  if (!socket) return <div>Connecting...</div>;
-
+  if (loading || !user) return <div>loading...</div>;
+  if (!socket) return <div>Connencting to websocket</div>
   return (
     <>
       <Navbar />
