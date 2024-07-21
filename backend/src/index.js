@@ -10,6 +10,7 @@ import cors from "cors"
 import url from 'url'
 import { User } from "./SocketManager.js";
 import jwt from 'jsonwebtoken'
+import prisma from "./db/index.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -20,10 +21,20 @@ const gameManager = new GameManager();
 
 app.use(
   session({
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000, // ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
     secret: process.env.COOKIE_SECRET || "keyboard cat",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    },
   })
 );
 
@@ -60,7 +71,7 @@ wss.on("connection", (socket, req) => {
 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Your client's origin
+    origin: ['https://chess-aman-dev.vercel.app', 'http://localhost:5173'], // Your client's origin
     credentials: true, // Allow credentials
   })
 )

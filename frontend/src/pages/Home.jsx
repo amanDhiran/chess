@@ -12,7 +12,7 @@ function Home() {
           <div className=" rounded-md overflow-hidden md:block">
             <img
               className="w-[300px] md:w-[500px] h-auto aspect-square"
-              src="https://www.chess.com/bundles/web/images/offline-play/standardboard.1d6f9426.png"
+              src="/board.png"
               alt=""
             />
           </div>
