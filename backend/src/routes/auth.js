@@ -15,7 +15,7 @@ userRouter.get(
   }),
   (req, res) => {
     console.log('User authenticated:', req.user);
-    res.redirect('http://localhost:5173/game');
+    res.redirect(CLIENT_URL || 'http://localhost:5173/game');
   }
 );
 
