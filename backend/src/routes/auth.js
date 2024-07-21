@@ -7,13 +7,18 @@ const userRouter = Router();
 
 const JWT_SECRET = process.env.JWT_SECRET 
 const CLIENT_URL = process.env.CLIENT_URL
+
 userRouter.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: CLIENT_URL || "http://localhost:5173/game",
-    failureRedirect: "/login",
-  })
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login',
+  }),
+  (req, res) => {
+    console.log('User authenticated:', req.user);
+    res.redirect('http://localhost:5173/game');
+  }
 );
+
 
 userRouter.get(
   "/google",

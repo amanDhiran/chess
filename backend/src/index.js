@@ -11,6 +11,7 @@ import url from 'url'
 import { User } from "./SocketManager.js";
 import jwt from 'jsonwebtoken'
 import prisma from "./db/index.js";
+import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 
 const app = express();
 const server = http.createServer(app);
@@ -32,7 +33,7 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      sameSite: "none",
+      // sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
@@ -75,6 +76,14 @@ app.use(
     credentials: true, // Allow credentials
   })
 )
+
+app.use((req, res, next) => {
+  console.log(req.session);
+  console.log(req.user);
+  next();
+});
+
+
 app.use('/auth', userRouter)
 
 server.listen(3000, () => {
