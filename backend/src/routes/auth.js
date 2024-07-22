@@ -11,12 +11,9 @@ const CLIENT_URL = process.env.CLIENT_URL
 userRouter.get(
   '/google/callback',
   passport.authenticate('google', {
+    successRedirect: `${CLIENT_URL || 'http://localhost:5173'}/game`,
     failureRedirect: '/login',
-  }),
-  (req, res) => {
-    console.log('User authenticated:', req.user);
-    res.redirect(CLIENT_URL || 'http://localhost:5173/game');
-  }
+  })
 );
 
 
@@ -32,7 +29,7 @@ userRouter.get(
 userRouter.get(
   '/github/callback',
   passport.authenticate('github', {
-    successRedirect: CLIENT_URL || "http://localhost:5173/game",
+    successRedirect: `${CLIENT_URL || 'http://localhost:5173'}/game`,
     failureRedirect: '/login',
   }),
 );
