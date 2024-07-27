@@ -13,9 +13,9 @@ import jwt from 'jsonwebtoken'
 import prisma from "./db/index.js";
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 
+const JWT_SECRET = process.env.JWT_SECRET
 const app = express();
 const server = http.createServer(app);
-const JWT_SECRET = process.env.JWT_SECRET
 const wss = new WebSocketServer({ server });
 
 const gameManager = new GameManager();
@@ -51,23 +51,18 @@ wss.on("connection", (socket, req) => {
     return;
   }
 
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    if (err) {
-      socket.close();
-      return;
-    }
-
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.userId;
     gameManager.addUser(new User(socket, userId));
 
-    socket.on('close', () => {
+    socket.on("close", () => {
       gameManager.removeUser(socket);
     });
-  });
-  socket.on("close", () => {
-    // console.log("user disconnected");
-    gameManager.removeUser(socket);
-  });
+  } catch (err) {
+    console.error('Invalid token:', err);
+    socket.close();
+  }
 });
 
 app.use(
@@ -77,11 +72,11 @@ app.use(
   })
 )
 
-app.use((req, res, next) => {
-  console.log(req.session);
-  console.log(req.user);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   console.log(req.user);
+//   next();
+// });
 
 
 app.use('/auth', userRouter)
