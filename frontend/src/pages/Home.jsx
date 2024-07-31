@@ -7,7 +7,7 @@ function Home() {
   return (
     <>
     <Navbar />
-      <div className="pt-10">
+      <div className="pt-16">
         <div className="flex flex-col md:flex-row items-center justify-center md:items-start gap-11 md:gap-5 lg:gap-28">
           <div className=" rounded-md overflow-hidden md:block">
             <img
@@ -16,7 +16,7 @@ function Home() {
               alt=""
             />
           </div>
-          <div className="flex flex-col  gap-8">
+          <div className="flex flex-col justify-center gap-8">
             <h3 className="text-white text-center text-2xl md:text-4xl font-bold">
               Welcome to the world of Chess!
             </h3>

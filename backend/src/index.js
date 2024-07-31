@@ -20,6 +20,10 @@ const wss = new WebSocketServer({ server });
 
 const gameManager = new GameManager();
 
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 app.use(
   session({
     store: new PrismaSessionStore(prisma, {
@@ -33,7 +37,7 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      // sameSite: "none",
+      // sameSite: "none", //uncomment in production
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
@@ -71,12 +75,6 @@ app.use(
     credentials: true, // Allow credentials
   })
 )
-
-// app.use((req, res, next) => {
-//   console.log(req.session);
-//   console.log(req.user);
-//   next();
-// });
 
 
 app.use('/auth', userRouter)

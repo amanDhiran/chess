@@ -23,14 +23,14 @@ function Navbar() {
 
   return (
     <div className='flex justify-between px-5 lg:px-16 py-5 items-center'>
-      <div onClick={() => navigate('/')} className='text-white cursor-pointer font-semibold text-2xl'>
+      <div onClick={() => navigate('/')} className='text-white cursor-pointer font-semibold text-xl md:text-2xl'>
         Play Chess
       </div>
       {loading? null : <div>
         {!user ?
         <div className='flex gap-2'>
           {/* <button className='bg-[#373735] hover:bg-[#4C4B48] text-white/70 hover:text-white px-2 text-sm font-medium md:text-base rounded-[3px] md:px-3 py-1 md:py-2 md:rounded-lg'>Sign Up</button> */}
-          <button onClick={() => {navigate('/login')}} className='bg-[#81b64c] hover:bg-[#a4e069] text-white px-2 text-sm font-medium md:text-base rounded-[3px] md:px-3 py-1 md:py-2 md:rounded-lg'>Log In</button>
+          <button onClick={() => {navigate('/login')}} className='bg-[#81b64c] hover:bg-[#a4e069] text-white px-1 text-xs font-medium md:text-sm rounded-[3px] md:px-3 py-1 md:py-2 md:rounded-lg'>Log In</button>
         </div> : 
         <div className='flex items-center gap-4'>
           <div className='text-white'>{user.name} </div> 

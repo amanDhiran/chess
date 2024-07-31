@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
 import ResultModal from "../components/ResultModal";
+import Loader from "../components/Loader";
 
 export const INIT_GAME = "init_game";
 export const MOVE = "move";
@@ -125,7 +126,9 @@ function Game() {
     };
   }, [socket]);
 
-  if (loading || !user) return <div>loading...</div>;
+  if (loading || !user) return <div className="h-screen w-full flex items-center justify-center">
+      <Loader/>
+    </div>;
   if (!socket) return <div>Connencting to websocket</div>
   return (
     <>

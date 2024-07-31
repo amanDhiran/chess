@@ -13,7 +13,6 @@ export const useSocket = () => {
         };
 
         const ws = new WebSocket(`${WS_URL}?token=${user.token}`);
-
         ws.onopen = () => {
             console.log("connected");
             setSocket(ws)
