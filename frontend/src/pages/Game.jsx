@@ -40,6 +40,8 @@ function Game() {
 
   const handleClose = () => {
     setAlertMessage(null);
+    chess.reset();
+    setWaitingForOpponent(false)
     if (opponentDisconnected) {
       // setStarted(false);
       chess.reset();

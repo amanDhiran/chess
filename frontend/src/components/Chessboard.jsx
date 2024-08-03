@@ -127,7 +127,7 @@ function Chessboard({ board, socket, setBoard, chess, playerColor, started }) {
 
   return (
     <div
-      className={`max-w-[500px]  md:max-w-[500px] md:h-[500px] lg:max-w-[600px] lg:h-[600px] m-auto grid grid-rows-8 `}
+      className={`max-w-[500px] rounded-md overflow-hidden md:max-w-[500px] md:h-[500px] lg:max-w-[600px] lg:h-[600px] m-auto grid grid-rows-8 `}
     >
       {renderBoard()}
     </div>
