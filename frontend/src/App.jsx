@@ -10,14 +10,24 @@ import Footer from './components/Footer'
 function App() {
 const location = useLocation()
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
+    <main className="flex-grow">
         <Routes>
           <Route path='/' element = {<Home />} />
           <Route path='/game' element = {<Game />} />
           <Route path='/login' element = {<Login />} />
         </Routes>
-        <Footer />
-    </div>
+    </main>
+    <Footer />
+  </div>
+    // <div>
+    //     <Routes>
+    //       <Route path='/' element = {<Home />} />
+    //       <Route path='/game' element = {<Game />} />
+    //       <Route path='/login' element = {<Login />} />
+    //     </Routes>
+    //     <Footer />
+    // </div>
   )
 }
  

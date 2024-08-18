@@ -22,7 +22,7 @@ function Navbar() {
     };
 
   return (
-    <div className='flex justify-between px-5 lg:px-16 py-5 items-center'>
+    <div className='flex justify-between px-5 md:px-16 lg:px-32 py-5 items-center'>
       <div onClick={() => navigate('/')} className='flex items-center gap-2'>
         <img className='h-8' src="/chess.png" alt="" />
         <p className='text-white cursor-pointer font-semibold text-xl md:text-2xl'>Play Chess</p>
